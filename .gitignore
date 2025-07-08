@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+
+# Vite build output
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# VSCode local settings
+.vscode/
+
+# Local environment variables
+.env
+.env.*.local
+
+# Mac 系统垃圾
+.DS_Store
+
+# Optional cache
+.cache/
+.temp/
+.tmp/
+vite-report.html
+
+# Typescript build outputs (如启用 ts)
+*.tsbuildinfo
+
+# IDEs
+.idea/
+*.sw?
+
+# Coverage reports
+coverage/
+
+# Lint cache
+.eslintcache
