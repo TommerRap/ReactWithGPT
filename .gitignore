@@ -14,8 +14,10 @@ pnpm-debug.log*
 .vscode/
 
 # Local environment variables
+.env.*
 .env
 .env.*.local
+.evn.local
 
 # Mac 系统垃圾
 .DS_Store
