@@ -302,3 +302,63 @@ const status = score >= 60
 - React components are written using JSX, which compiles to JS.
 - JSX is not HTML – it has differences in naming, event syntax, and structure.
 - Conditional rendering and variable interpolation are key JSX patterns.
+
+## Functional Components
+
+### Component
+
+A component is a **function that returns JSX**.  
+React uses these components as the building blocks of the UI.
+
+~~~js
+function Welcome() {
+  return <h1>Hello, Tommer!</h1>;
+}
+~~~
+
+---
+
+### Core rules
+
+| Concept           | Explanation                                       |
+| ----------------- | ------------------------------------------------- |
+| Function syntax   | Components are written as `function Name() {...}` |
+| Capitalised names | Component names must start with a capital letter  |
+| Return JSX        | Must return a single JSX root element             |
+| Usage             | Use as `<ComponentName />` in other JSX           |
+
+---
+
+###  Example: ScoreBoard Component
+
+~~~js
+function ScoreBoard() {
+  const score = 92;
+  const name = "Tommer";
+  return (
+    <div>
+      <h2>Score Board</h2>
+      <p>{name}'s score is: {score}</p>
+    </div>
+  );
+}
+~~~
+
+This component was used inside `App` like so:
+
+~~~js
+<ScoreBoard />
+~~~
+
+React renders the `ScoreBoard` component inline where it is called.
+
+---
+
+### Summary
+
+- Functional components are pure JavaScript functions returning JSX
+- Must follow capitalisation and return rules
+- Custom components can be reused anywhere in JSX
+- This is the foundation of scalable, modular React UI
+
+Next: we will learn how to make components **dynamic** using `props`

@@ -6,11 +6,6 @@ import api from './api/index.js'
 
 function App() {
   const [count, setCount] = useState(0)
-  api.get('/').then(response => {
-    console.log('API Response:', response.data);
-  }).catch(error => {
-    console.error('API Error:', error);
-  });
   return (
     <>
       <div>
@@ -22,7 +17,6 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <h1>API Base: {import.meta.env.VITE_API_BASE_URL}</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -33,9 +27,20 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
+        <ScoreBoard />
       </p>
     </>
   )
 }
 
+function ScoreBoard(){
+  const score = 92;
+  const name = "Tommer";
+  return (
+    <div>
+      <h2>Score Board</h2>
+      <p>{name}'s' score is: {score}</p>
+    </div>
+  );
+}
 export default App
