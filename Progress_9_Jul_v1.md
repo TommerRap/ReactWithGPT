@@ -82,7 +82,7 @@
 
 ---
 
-## ⚙️ Chapter 4：模块化与开发环境
+## ✅ Chapter 4：模块化与开发环境
 
 - 模块拆分 & import/export 基础
 - 使用 Vite 创建 React 项目
@@ -93,7 +93,7 @@
 
 ---
 
-## ⏳ Chapter 5：React 入门
+## ⚙️ Chapter 5：React 入门
 
 - React 背景、理念、与 JS 区别
 - JSX 语法
@@ -207,19 +207,19 @@
 
 本章学习了 JavaScript 中对象与数组的结构理解，以及访问、遍历、解构的关键语法。最终顺利通过章节考试，掌握如下内容：
 
-#### 🟦 对象属性访问
+### 🟦 对象属性访问
 
 - `obj.key` vs `obj["key"]` 区别
 - 对象的 key 实际上都被存储为字符串
 - `obj[dynamicVar]` 可以使用变量来动态访问属性
 
-#### 🟦 Object.keys / values / entries
+### 🟦 Object.keys / values / entries
 
 - `Object.keys(obj)` 返回所有可枚举 key（字符串数组）
 - `Object.values(obj)` 返回所有可枚举 value（数组）
 - `Object.entries(obj)` 返回二维数组：`[[key, value], ...]`
 
-#### 🟩 for...in vs for...of
+### 🟩 for...in vs for...of
 
 - `for...in`：可枚举（enumerable）属性，适用于对象 / 数组索引 / 自定义属性
 - `for...of`：可迭代（iterable）值，必须依赖 `Symbol.iterator`
@@ -228,7 +228,7 @@
 - `for...of Object.entries(obj)` 成为标准组合，结构解构成 `[key, value]`
 - `for...in Object.entries(obj)` 只会遍历索引 "0", "1"，不会进入第二维
 
-#### 🟧 数组本质与细节
+### 🟧 数组本质与细节
 
 - 数组本质是对象，key 是 "0", "1", ...
 - `arr.customProp = "xx"` 可以动态加属性
@@ -236,7 +236,7 @@
 - for...of 只遍历“真实的数组值”
 - 数组的解构赋值只根据 **顺序** 赋值，而不是根据 key
 
-#### 🟨 解构赋值 Destructuring Assignment
+### 🟨 解构赋值 Destructuring Assignment
 
 - 对象解构：按 key 匹配，支持默认值 / 重命名 / 嵌套
 - 数组解构：按位置顺序匹配，支持跳项 / 默认值
@@ -248,32 +248,53 @@
 
 ---
 
-## ✅ Chapter 4 - 模块化与开发环境（进行中）
+## ✅ Chapter 4 - 模块化与开发环境（已结业）
 
-### 🧩 小节 1：模块化语法基础（已完成）
+### ✅ 小节 1：模块拆分与 import/export
 
-- 理解了什么是模块（module）的抽象意义
-- 掌握 `export` 与 `import` 的基本语法
-  - 命名导出（named export）与默认导出（default export）的语义差异
-  - 命名导入（named import）语法需要花括号且变量名必须一致
-  - 默认导入（default import）变量名可自定义，但只能对应一个 default export
-- 学会判断不同导出方式在使用时的命名绑定与语义误导风险
-- 补充理解：所有 `import` 绑定的变量在语义上为 `const`，不可重新赋值，但对象本体仍可变
+- 掌握命名导出、默认导出、命名导入、默认导入的语法与语义差异
+- 理解模块化的实际用途和组织价值
 
-### ⚙️ 小节 2：使用 Vite 创建 React 项目（进行中）
+### ✅ 小节 2：使用 Vite 创建 React 项目
 
-- 已讲解 Vite 脚手架的安装命令与核心优势：
-  - 启动快、热更新快、零配置上手
-  - 官方支持 React 模板，适合现代开发需求
-- 目前已理解基本命令与目录结构：
+- 使用 `npm create vite@latest` 快速构建 React 模板
+- 成功运行本地 dev server 并了解项目结构
 
-  ~~~bash
-  npm create vite@latest my-react-app -- --template react
-  cd my-react-app
-  npm install
-  npm run dev
-  ~~~
+### ✅ 小节 3：环境变量配置
 
-- ✅ 正在准备在本地实测启动开发环境，尚未完成执行与调试过程
+- 理解 `.env` 文件的用途与作用
+- 知道 Vite 中变量需以 `VITE_` 开头才能被前端访问
+- 成功从 `.env.local` 中读取后端 baseURL
 
-​	⏳ 当前状态：等待完成项目创建与运行确认，后续进入 .env 配置与 API 封装
+### ✅ 小节 4：Axios 模块封装
+
+- 使用 `axios.create()` 创建封装实例
+- 理解封装意义、可复用性与 baseURL 解耦作用
+- 在组件中完成实际请求并处理响应/错误
+
+### ✅ 小节 5：跨域处理（CORS）
+
+- 理解 CORS 的本质为浏览器行为
+- 区分浏览器限制 vs Postman 的差异
+- 明确两种解决方案（后端设置 vs Vite proxy）
+- 成功使用 `.AllowAnyOrigin()` 解锁本地多端访问
+
+✅ 本章节考试成绩：95/100，因子域判断失误扣分  
+🎓 状态：正式通关，已晋级 Chapter 5：React 入门
+
+
+
+## ⏳Chapter 5 React
+
+### ✅ 小节 1：React 与 JSX 语法入门
+
+- 理解 React 的设计理念：声明式 + 组件化
+- 理解 JSX 是 JavaScript 的语法糖，并非 HTML
+- 学会 JSX 中插入变量、三元表达式、行内样式的基本写法
+- 掌握 JSX 与 HTML 的关键差异（如 className、事件名、style 等）
+- 实操练习通过 ✅
+  - 能根据变量动态渲染内容
+  - 能使用三元表达式控制渲染结构
+  - 能写出合法 JSX 结构并修正语法误区
+
+🎯 当前状态：准备进入小节 5.2 —— 编写你的第一个 React 函数组件
