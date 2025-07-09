@@ -2,10 +2,15 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import api from './api/index.js'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  api.get('/').then(response => {
+    console.log('API Response:', response.data);
+  }).catch(error => {
+    console.error('API Error:', error);
+  });
   return (
     <>
       <div>
@@ -17,6 +22,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <h1>API Base: {import.meta.env.VITE_API_BASE_URL}</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}

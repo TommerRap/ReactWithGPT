@@ -1174,3 +1174,101 @@ import {add} from from 'maths.js'
 | Default Export | `export default  const add = () =>{}` |
 | Default Import | `import abcdef from 'xx.js'`          |
 
+## Promises
+
+A **Promise** is a built-in JavaScript object used to handle asynchronous operations. It acts as a container for a future result — success or failure — and provides a consistent way to attach logic to that result.
+
+---
+
+### Core Concepts
+
+- A Promise represents a **future value**, like an async task you’ve started but not yet finished.
+- It is commonly used with `fetch`, `axios`, timeouts, and all async code.
+- It helps avoid callback hell and improves error handling.
+
+---
+
+### Promise States
+
+| State       | Description                          |
+| ----------- | ------------------------------------ |
+| `pending`   | The async task has not completed yet |
+| `fulfilled` | The task completed successfully      |
+| `rejected`  | The task failed (threw an error)     |
+
+---
+
+### Creating a Promise
+
+~~~js
+const promise = new Promise((resolve, reject) => {
+  // Do something async
+  if (everythingOk) {
+    resolve("✅ All good!");
+  } else {
+    reject("❌ Something went wrong.");
+  }
+});
+~~~
+
+- `resolve(value)` → transitions to **fulfilled**
+- `reject(error)` → transitions to **rejected**
+
+---
+
+### Using `.then()` and `.catch()`
+
+~~~js
+promise
+  .then(result => {
+    console.log("Success:", result);
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
+~~~
+
+---
+
+### Example: Delayed Promise
+
+~~~js
+function waitTwoSeconds() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("⏱️ Done after 2 seconds");
+    }, 2000);
+  });
+}
+
+waitTwoSeconds().then(msg => console.log(msg));
+~~~
+
+---
+
+### Example: Conditional Milk Tea
+
+~~~js
+function orderMilkTea(available) {
+  return new Promise((resolve, reject) => {
+    if (available) {
+      resolve("🧋 Milk tea is ready!");
+    } else {
+      reject("❌ No ingredients!");
+    }
+  });
+}
+
+orderMilkTea(true)
+  .then(msg => console.log("✅", msg))
+  .catch(err => console.log("💥", err));
+~~~
+
+---
+
+### Summary
+
+- Promises help manage async logic in a clean, chainable way.
+- `resolve()` is for success, `reject()` for failure.
+- `.then()` handles success, `.catch()` handles errors.
+- Tools like Axios return Promises, which is why `.then()` and `.catch()` are used with them.
