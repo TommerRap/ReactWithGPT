@@ -27,7 +27,7 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-        <ScoreBoard />
+        <Greetings name = "Tommer"/>
       </p>
     </>
   )
@@ -42,5 +42,14 @@ function ScoreBoard(){
       <p>{name}'s' score is: {score}</p>
     </div>
   );
+}
+
+function Greetings({name}){
+  return(
+    <div>
+      <h2>Greetings!</h2>
+      <h2>Hi there, {name}</h2>
+    </div>
+  )
 }
 export default App

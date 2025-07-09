@@ -362,3 +362,39 @@ React renders the `ScoreBoard` component inline where it is called.
 - This is the foundation of scalable, modular React UI
 
 Next: we will learn how to make components **dynamic** using `props`
+
+## Props: Passing Data Between Components
+
+###  What are props?
+
+- Props (short for "properties") are parameters passed **from parent to child components**
+- In JSX, they are written like HTML attributes:
+  ~~~jsx
+  <Greeting name="Tommer" />
+  ~~~
+
+- Inside the component, they can be accessed via:
+  ~~~js
+  function Greeting(props) {
+    return <p>Hello, {props.name}</p>;
+  }
+  ~~~
+
+Or destructured for better readability:
+
+~~~js
+function Greeting({ name }) {
+  return <p>Hello, {name}</p>;
+}
+~~~
+
+---
+
+### Key Learnings
+
+- Props are read-only and one-way: parent → child
+- JSX supports both strings (`name="Tommer"`) and expressions (`score={92}`)
+- Missing props do not crash the app – React renders them as empty
+- Capitalised component names receive props; lowercase tags (e.g. `<div>`) don’t
+- Props help make components **reusable and dynamic**
+
