@@ -93,7 +93,7 @@
 
 ---
 
-## ⚙️ Chapter 5：React 入门
+## ✅ Chapter 5：React 入门
 
 - React 背景、理念、与 JS 区别
 - JSX 语法
@@ -104,7 +104,7 @@
 
 ---
 
-## ⏳ Chapter 6：条件渲染与列表渲染
+## ✅ Chapter 6：条件渲染与列表渲染
 
 - 三元表达式、短路渲染
 - `.map()` 渲染列表
@@ -113,7 +113,7 @@
 
 ---
 
-## ⏳ Chapter 7：表单处理
+## ✅ Chapter 7：表单处理
 
 - 受控组件 vs 非受控组件
 - 表单事件绑定
@@ -284,7 +284,7 @@
 
 
 
-## ⏳Chapter 5 React
+## ✅Chapter 5 React（已完成）
 
 ### ✅ 小节 1：React 与 JSX 语法入门
 
@@ -328,3 +328,174 @@
 - ⚠️ 本小节综合练习（双参数传值）主动跳过，标记为略过题
 
 🎯 当前状态：准备进入小节 5.4 —— state 响应式数据机制
+
+### ✅ 小节 4：useState 状态机制
+
+- 理解 React 状态的本质：函数组件默认是无状态的，useState 是其“记忆”机制
+- 掌握 useState 基本用法：
+  - 正确写法：`const [state, setState] = useState(initialValue)`
+  - React 会在重新渲染时根据更新后的值替换原状态
+- 理解状态更新是异步的：
+  - `setState(xxx)` 不会立即更新变量值，而是调度下一次渲染
+  - 每次更新后会“重新执行整个函数体”，并重新赋值状态
+- 理解 setState 的函数式写法协议：
+  - `setState(prev => prev + 1)` 是更稳定、避免闭包影响的方式
+  - 练习了“连续 setState 无效”的常见坑题，并使用函数式成功解决
+- 深入理解作用域与变量遮蔽问题：
+  - `setCount(count => count + 1)` 中的 count 是新作用域参数，不是外层的状态变量
+- 小节练习覆盖多个 useState 类型（数值型练习通过，其他略过）
+
+🎯 当前状态：Chapter 5 - React 入门全部完成 ✅  
+准备进入 Chapter 6 —— 条件渲染与列表渲染
+
+## ✅Chapter 6 条件渲染与列表渲染
+
+### ✅ 小节 6.1：条件渲染三种写法 (包含6.1， 6.2)
+
+- 理解 JSX 中“插入表达式”与“结构渲染”的区别
+- 掌握三种常见条件渲染方式：
+  1. ✅ 三元表达式（A ? B : C）：用于有 if / else 的场景，可嵌套实现多分支判断
+  2. ✅ 短路渲染（A && B）：用于“成立则渲染 B”，否则什么都不渲染（不会显示 false/null）
+  3. ✅ return null：用于组件级提前中止，不渲染任何 DOM 节点
+- 熟悉 null 在 React 中代表“完全不渲染”
+- 练习多种渲染方式，并比较各自使用场景
+- 理解嵌套三元会触发代码质量工具（如 SonarQube）的可读性警告
+
+🎯 当前状态：小节 6.1 已完成 ✅，准备进入小节 6.2：数组映射渲染 `.map()`
+
+### ✅ 小节 6.2：数组渲染与 `.map()` 的完整掌握 （包含6.3， 6.4）
+
+- 理解 `items.map(...)` 是在 JSX 中动态生成元素数组
+- 熟悉 `.map()` 的回调参数结构（item, index, array）
+- 明确 key 的用途不是为了排序，而是为了“标识身份”，帮助 React 精确 diff 节点
+- 对比 `item.id` 与 `index` 的使用风险与场景：
+  - `item.id` 是“你是谁”，推荐使用（身份稳定）
+  - `index` 是“你排第几个”，不推荐（顺序会变）
+- 了解空数组、null/undefined、异步状态下如何防止 `.map()` 报错
+- 使用条件渲染 + `.map()` 组合展示“加载中 / 无数据 / 正常数据”的三态逻辑
+- 重点理解：`useState` 并非只更新变量，而是触发 **整个组件函数重新执行 + return 新的 JSX**
+  - ✅ 原话总结为：“useState 不只是更新已经 return 出去的内容，而是会压根重新 return 一遍”
+
+🎯 当前状态：第六章节通关
+
+
+
+## ✅ Chapter 7：表单处理
+
+### ✅ 小节 7.1：受控组件 vs 非受控组件
+
+#### 🟩 受控组件（Controlled Component）
+
+- 使用 `value={state}` 实现 input 与 React 状态的绑定
+- `onChange={e => setState(...)}` 是更新机制核心，触发组件重新渲染
+- `useState` 是 input 的“唯一数据源”，React 完全接管
+- 若绑定 `value` 但无 `onChange`，input 将被冻结无法输入
+
+#### 🟥 非受控组件（Uncontrolled Component）
+
+- 不绑定 value，使用 `ref` 获取真实 DOM 节点的 `.value`
+- 初始 `.current` 为 `null`，input 渲染后由 React 自动赋值
+- 不触发 rerender，不参与 React 状态流，数据由 DOM 管理
+- 常用于文件上传、遗留 DOM 插件、无需实时响应的输入场景
+
+🎓 小节状态：通关 ✅
+
+### ✅ 小节 7.2：多字段表单 + 表单验证机制
+
+本节掌握了在 React 中构建含多个字段的表单，并实现基本验证逻辑的完整流程：
+
+#### 🟩 表单状态组织
+
+- 使用对象型 useState（如 `{ name, password }`）统一管理所有字段值
+- 每个 `<input>` 使用 `name="xxx"` 区分字段身份
+- `onChange` 中通过 `[e.target.name]` 动态更新字段值，实现通用表单 handler
+
+#### 🟨 表单提交与验证
+
+- 使用 `<form onSubmit={handleSubmit}>` 接管提交行为，统一阻止默认刷新
+- 提交时验证字段是否为空，若未填则设置 error 状态
+- 错误信息通过条件渲染 `<p>{error}</p>` 显示于表单上方
+- 提交成功后使用 `alert(JSON.stringify(formData))` 进行模拟提交，并清空错误
+
+#### 🟥 额外知识点
+
+- `<button>` 在 `<form>` 中默认 `type="submit"`，会自动触发 `onSubmit`
+- 若需阻止其提交行为，需手动指定 `type="button"`
+
+🎓 小节状态：通关 ✅
+
+### ✅ 小节 7.3：表单数据提交后端（联调 .NET）
+
+本节实现了完整的表单请求提交流程，并成功与后端 .NET Controller 实现真实通信。
+
+#### ✅ 联调目标
+
+- 使用 `useState` 管理 formData，包含 `PhoneNumber`、`Email`、`NamePiece` 字段
+- 自动识别用户输入内容，并匹配字段归类（输入为数字则归为手机号，含 @ 为邮箱，其余为名字模糊匹配）
+- 使用封装后的 Axios 模块发送 `POST` 请求至 `/member/search` 接口
+- 成功从后端获取匹配结果（Member 列表）
+
+#### 🧠 技术要点突破
+
+- Axios 请求默认使用异步 Promise，必须 `await` 获取结果，否则 `.data` 不可访问
+- `setState` 为异步操作，更新后立即读取旧值会失败，需提前提取 `data` 后再发送请求
+- React 请求体字段必须保持与后端 DTO 一致（区分大小写），如 `PhoneNumber`（非 `phoneNumber`）
+- 请求头需带上 `Content-Type: application/json`，避免后端 400 BadRequest
+
+#### ✅ 调试过程中的踩坑回顾
+
+- ❌ 初始使用 `setFormData()` 后立即读取旧值发请求，导致 payload 空
+- ❌ 直接拼接 `console.log("Submit:" + obj)` 输出为 `[object Object]`，无法调试数据
+- ✅ 改为 `console.log("Submit:", obj)` 或使用 `JSON.stringify()` 正确打印
+- ❌ 起初使用 `https://localhost` 发起请求，导致浏览器 `ERR_SSL_PROTOCOL_ERROR`
+- ✅ 改为 `http://localhost` 并使用 Vite 跨域 proxy/或配置 .NET 允许本地请求解决
+
+🎓 小节状态：通关 ✅  
+📦 Chapter 7 正式结业 ✅
+
+## ⏳ Chapter 8：useEffect 与生命周期
+
+### ✅ 小节 8.1：副作用与 useEffect 的引入
+
+本节理解了 React 中副作用的含义、常见类型及为何需要 `useEffect` 来管理副作用行为。
+
+#### ✅ 什么是副作用（Side Effect）
+
+- 副作用指非渲染行为的操作，例如：
+  - 发起网络请求
+  - 修改浏览器标题（`document.title`）
+  - 设置定时器 / 事件监听
+  - 操作 DOM / 控制台输出
+- React 函数组件会在每次重新渲染时**重新执行整个函数体**
+  - 若副作用写在组件体内，将在每次渲染时重复执行 → 易导致死循环或性能问题
+
+#### ✅ useEffect 的作用
+
+- 将副作用逻辑“交给 React 安排”，确保在**渲染完成后执行**
+- 支持通过依赖数组（dependency array）精确控制执行时机：
+  - `useEffect(() => {...}, [])`：仅首次加载后执行一次
+  - `useEffect(() => {...}, [inputValue])`：仅在 inputValue 发生变化时执行
+  - 不传第二个参数时：每次渲染都会执行
+
+🎓 小节状态：通关 ✅
+
+### ✅ 小节 8.2：useEffect + 异步数据加载 + 状态控制
+
+本节掌握了如何在组件挂载后自动执行异步请求，以及通过 `useState` 管理 loading / error / data 三种状态，实现完整的副作用逻辑渲染流程。
+
+#### ✅ 技术流程
+
+- 使用 `useEffect(() => { ... }, [])` 代表组件首次加载后的副作用操作
+- 副作用中封装 `async` 函数进行 Axios 请求
+- 定义 3 个状态变量：
+  - `loading`：是否正在加载
+  - `error`：请求是否出错
+  - `responseData`：最终返回的数据（用于 `.map()`）
+
+#### ✅ 典型副作用判断：
+
+- 页面加载后发起请求 → ✅ 属于副作用
+- 用户输入触发本地状态更新 → ❌ 非副作用（是 UI 响应）
+- 用户输入触发动态搜索请求 → ✅ 是副作用（需 `useEffect` 监控 input）
+
+🎓 小节状态：通关 ✅
