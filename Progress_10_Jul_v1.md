@@ -122,7 +122,7 @@
 
 ---
 
-## ⏳ Chapter 8：useEffect 与生命周期
+## ✅ Chapter 8：useEffect 与生命周期
 
 - useEffect 调用时机
 - 依赖项数组与监听机制
@@ -499,3 +499,31 @@
 - 用户输入触发动态搜索请求 → ✅ 是副作用（需 `useEffect` 监控 input）
 
 🎓 小节状态：通关 ✅
+
+### ✅ 小节 8.3：副作用清理机制（Cleanup）
+
+本节深入理解了副作用清理函数的执行机制与实际作用，明确了何时应清理、为何清理。
+
+#### ✅ 清理的目的
+
+- 避免组件卸载后仍执行异步逻辑（如 `setState`、console、数据覆盖）
+- 防止重复注册定时器、事件监听器导致性能浪费与逻辑冲突
+- 避免 React 报错：“Can't perform a state update on an unmounted component”
+
+#### ✅ 执行时机
+
+- 使用 `useEffect(() => { ... return () => {...} }, [])`
+- React 在组件**卸载前**自动执行 `return` 函数，不等待异步副作用结束
+- 可以通过布尔变量 `ignore = true` 或 `AbortController` 来中断未完成的异步流程
+
+#### ✅ 场景实例：
+
+- 页面加载发出 axios 请求 → 组件切页卸载 → 返回值不再触发 `setState`
+- 注册 resize 监听 → 卸载时 removeListener
+- 轮询定时器 → 卸载时 `clearInterval`
+
+🎓 小节状态：通关 ✅
+
+Chapter 8 正式结业
+
+下一步：开始chapter 9

@@ -1225,3 +1225,82 @@ return (
 - Never directly put async inside `useEffect` — wrap it in a function
 - Use safe default state values (`[]`, `null`) to avoid runtime errors
 - Distinguish “user input = UI update” from “user input = async business logic”
+
+
+
+## Cleaning up Effects with useEffect
+
+Sometimes, effects need to be cleaned up when the component unmounts or before the effect re-runs.  
+This is done by **returning a cleanup function** inside `useEffect`.
+
+---
+
+### Why cleanup?
+
+Without cleanup, you may face:
+
+- Memory leaks (unclosed timers, subscriptions)
+- Duplicate network calls or event listeners
+- Attempting to update state after the component is gone (causing warnings)
+
+---
+
+### Syntax
+
+~~~js
+useEffect(() => {
+  const timer = setInterval(() => {
+    console.log("Tick");
+  }, 1000);
+
+  return () => {
+    clearInterval(timer);
+    console.log("🧹 Cleaned up");
+  };
+}, []);
+~~~
+
+---
+
+### Real-world example: blocking stale requests
+
+~~~js
+useEffect(() => {
+  let ignore = false;
+
+  const fetchData = async () => {
+    const res = await axios.get("/members");
+    if (!ignore) {
+      setData(res.data);
+    }
+  };
+
+  fetchData();
+
+  return () => {
+    ignore = true;
+  };
+}, []);
+~~~
+
+This prevents updates to a component that may have already unmounted while a request is still in flight.
+
+---
+
+### When is the cleanup function called?
+
+| Scenario                     | Cleanup triggered? |
+| ---------------------------- | ------------------ |
+| Component unmounts           | ✅ Yes              |
+| Dependency changes           | ✅ Yes              |
+| Same dependencies (no rerun) | ❌ No               |
+
+---
+
+### Key Takeaways
+
+- `return () => { ... }` inside `useEffect` is the official cleanup hook
+- Cleanup runs before the effect re-runs, or when the component unmounts
+- Useful for timers, listeners, aborting fetches, or preventing setState on unmounted components
+
+---
