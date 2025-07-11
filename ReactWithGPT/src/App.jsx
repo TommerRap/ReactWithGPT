@@ -1,142 +1,60 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import api from './api/index.js'
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Members from './pages/Members';
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [inputValue, setInputValue] = useState('');
   const [responseData, setResponseData] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await api.post("member/search", { NamePiece: "jessica" });
-        setResponseData(result.data);
-        // console.log(result);
-        setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [keywordLength, setKeywordLength] = useState(0);
+
+  const searchMemberData = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phonePattern = /^02\d{7,8}$/;
+
+    if (emailPattern.test(inputValue)) {
+      return { Email: inputValue };
+    } else if (phonePattern.test(inputValue)) {
+      return { PhoneNumber: inputValue };
+    } else {
+      return { NamePiece: inputValue };
     }
-    fetchData();
-  }, []);
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        {loading && <p>Loading...</p>}
-        {error && <p style={{ color: "red" }}>Error: {error}</p>}
-        {!loading && !error && (
-          <ul>
-            {responseData.map(member => (
-              <li key={member.id}>
-                {member.firstName} {member.lastName} - {member.phoneNumber}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      {/* <Form /> */}
-    </>
-  )
-}
-
-function ScoreBoard({ score }) {
-  const name = "Tommer";
+  };
 
   return (
-    <div>
-      {
-        score >= 90 ? (
-          <p style={{ color: 'gold' }}>High Pass!</p>
-        ) : score >= 80 ? (
-          <p style={{ color: 'green' }}>Good Pass!</p>
-        ) : score >= 60 ? (
-          <p style={{ color: 'grey' }}>Pass</p>
-        ) : (
-          <p style={{ color: 'red' }}>Failed.</p>
-        )
-      }
-    </div>
+    <BrowserRouter>
+      <nav>
+        <Link to="/">Home</Link> | 
+        <Link to="/members">Members</Link> | 
+        <Link to="/about">About</Link>
+      </nav>
+
+      <hr />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/members" element={
+          <Members 
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            setKeywordLength={setKeywordLength}
+            setLoading={setLoading}
+            setError={setError}
+            setResponseData={setResponseData}
+            searchMemberData={searchMemberData}
+            loading={loading}
+            error={error}
+            responseData={responseData}
+            keywordLength={keywordLength}
+          />
+        } />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-function Greetings({ name }) {
-  return (
-    <div>
-      <h2>Greetings!</h2>
-      <h2>Hi there, {name}</h2>
-    </div>
-  )
-}
-
-function NameInput() {
-  const [val, setVal] = useState("");
-  return (
-    <div>
-      <input
-        value={val}
-        onChange={e => setVal(e.target.value)}
-      />
-      <p>Your Name is :{val ? val : "stranger"}</p>
-    </div>
-  );
-}
-
-// function Form() {
-//   const [inputValue, setInputValue] = useState('');
-//   const [formData, setFormData] = useState({});
-
-//   const typeCast = () => {
-//     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//     const phonePattern = /^02\d{7,8}$/;
-
-//     if (emailPattern.test(inputValue)) {
-//       //console.log("Email!")
-//       return {
-//         ...formData,
-//         Email: inputValue
-//       }
-//     } else if (phonePattern.test(inputValue)) {
-//       //console.log("Phone Number!")
-//       return {
-//         ...formData,
-//         PhoneNumber: inputValue
-//       }
-//     } else {
-//       //console.log("Name Piece!")
-//       return{
-//         ...formData,
-//         NamePiece: inputValue
-//       }
-//     }
-//   }
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const data = typeCast();
-//     console.log("Submit:",data);
-//     const result = await api.post("/member/search", data);
-//      console.log(result);
-//   }
-
-//   return(
-//   <form onSubmit={handleSubmit}>
-//     <input value={inputValue} onChange={(e) => setInputValue(e.target.value)}></input>
-//     <button>Submit</button>
-//   </form>
-//   )
-// }
-
-
 
 export default App;

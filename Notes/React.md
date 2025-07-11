@@ -1304,3 +1304,72 @@ This prevents updates to a component that may have already unmounted while a req
 - Useful for timers, listeners, aborting fetches, or preventing setState on unmounted components
 
 ---
+
+## Component Structure and Props Flow
+
+---
+
+### Splitting Components
+
+In React, components should be **small, focused, and reusable**. Large components are often broken down into:
+
+- Structural components (e.g., `<SearchInput>`)
+- Data display components (e.g., `<MemberList>`)
+
+Each component receives only what it needs through `props`. Shared state remains in the parent component, which handles all state updates and passes values/functions downward.
+
+---
+
+### Props: One-way Data Flow & Callback to Parent
+
+#### Core Principles
+
+- Props are passed **from parent to child only**
+- Props are **read-only**
+- Child components cannot "push" data up — but they can **call functions passed from the parent** to "report back"
+
+---
+
+#### Example: controlled input
+
+~~~js
+const [inputValue, setInputValue] = useState('');
+const [keywordLength, setKeywordLength] = useState(0);
+
+<SearchInput
+  inputValue={inputValue}
+  setInputValue={setInputValue}
+  setKeywordLength={setKeywordLength}
+/>
+~~~
+
+Inside child:
+
+~~~js
+const SearchInput = ({ inputValue, setInputValue, setKeywordLength }) => (
+  <input
+    value={inputValue}
+    onChange={e => {
+      setInputValue(e.target.value);
+      setKeywordLength(e.target.value.length);
+    }}
+  />
+)
+~~~
+
+This is the canonical pattern for:
+
+- Updating state in the parent (`setInputValue`)
+- Sending information back to the parent from user input (`setKeywordLength`)
+
+---
+
+#### Summary
+
+| Pattern             | Usage                    |
+| ------------------- | ------------------------ |
+| Parent → Child      | Pass values as props     |
+| Parent → Child Func | Pass `setXxx()` as props |
+| Child → Parent      | Call props functions     |
+
+This is **one-way data flow**, a core React design principle.
