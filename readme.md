@@ -113,7 +113,7 @@
 
 ---
 
-## ⏳ Chapter 7：表单处理
+## ✅ Chapter 7：表单处理
 
 - 受控组件 vs 非受控组件
 - 表单事件绑定
@@ -122,7 +122,7 @@
 
 ---
 
-## ⏳ Chapter 8：useEffect 与生命周期
+## ✅ Chapter 8：useEffect 与生命周期
 
 - useEffect 调用时机
 - 依赖项数组与监听机制
@@ -348,7 +348,7 @@
 🎯 当前状态：Chapter 5 - React 入门全部完成 ✅  
 准备进入 Chapter 6 —— 条件渲染与列表渲染
 
-## ⏳Chapter 6 条件渲染与列表渲染
+## ✅Chapter 6 条件渲染与列表渲染
 
 ### ✅ 小节 6.1：条件渲染三种写法 (包含6.1， 6.2)
 
@@ -378,3 +378,175 @@
 
 🎯 当前状态：第六章节通关
 
+
+
+## ✅ Chapter 7：表单处理
+
+### ✅ 小节 7.1：受控组件 vs 非受控组件
+
+#### 🟩 受控组件（Controlled Component）
+
+- 使用 `value={state}` 实现 input 与 React 状态的绑定
+- `onChange={e => setState(...)}` 是更新机制核心，触发组件重新渲染
+- `useState` 是 input 的“唯一数据源”，React 完全接管
+- 若绑定 `value` 但无 `onChange`，input 将被冻结无法输入
+
+#### 🟥 非受控组件（Uncontrolled Component）
+
+- 不绑定 value，使用 `ref` 获取真实 DOM 节点的 `.value`
+- 初始 `.current` 为 `null`，input 渲染后由 React 自动赋值
+- 不触发 rerender，不参与 React 状态流，数据由 DOM 管理
+- 常用于文件上传、遗留 DOM 插件、无需实时响应的输入场景
+
+🎓 小节状态：通关 ✅
+
+### ✅ 小节 7.2：多字段表单 + 表单验证机制
+
+本节掌握了在 React 中构建含多个字段的表单，并实现基本验证逻辑的完整流程：
+
+#### 🟩 表单状态组织
+
+- 使用对象型 useState（如 `{ name, password }`）统一管理所有字段值
+- 每个 `<input>` 使用 `name="xxx"` 区分字段身份
+- `onChange` 中通过 `[e.target.name]` 动态更新字段值，实现通用表单 handler
+
+#### 🟨 表单提交与验证
+
+- 使用 `<form onSubmit={handleSubmit}>` 接管提交行为，统一阻止默认刷新
+- 提交时验证字段是否为空，若未填则设置 error 状态
+- 错误信息通过条件渲染 `<p>{error}</p>` 显示于表单上方
+- 提交成功后使用 `alert(JSON.stringify(formData))` 进行模拟提交，并清空错误
+
+#### 🟥 额外知识点
+
+- `<button>` 在 `<form>` 中默认 `type="submit"`，会自动触发 `onSubmit`
+- 若需阻止其提交行为，需手动指定 `type="button"`
+
+🎓 小节状态：通关 ✅
+
+### ✅ 小节 7.3：表单数据提交后端（联调 .NET）
+
+本节实现了完整的表单请求提交流程，并成功与后端 .NET Controller 实现真实通信。
+
+#### ✅ 联调目标
+
+- 使用 `useState` 管理 formData，包含 `PhoneNumber`、`Email`、`NamePiece` 字段
+- 自动识别用户输入内容，并匹配字段归类（输入为数字则归为手机号，含 @ 为邮箱，其余为名字模糊匹配）
+- 使用封装后的 Axios 模块发送 `POST` 请求至 `/member/search` 接口
+- 成功从后端获取匹配结果（Member 列表）
+
+#### 🧠 技术要点突破
+
+- Axios 请求默认使用异步 Promise，必须 `await` 获取结果，否则 `.data` 不可访问
+- `setState` 为异步操作，更新后立即读取旧值会失败，需提前提取 `data` 后再发送请求
+- React 请求体字段必须保持与后端 DTO 一致（区分大小写），如 `PhoneNumber`（非 `phoneNumber`）
+- 请求头需带上 `Content-Type: application/json`，避免后端 400 BadRequest
+
+#### ✅ 调试过程中的踩坑回顾
+
+- ❌ 初始使用 `setFormData()` 后立即读取旧值发请求，导致 payload 空
+- ❌ 直接拼接 `console.log("Submit:" + obj)` 输出为 `[object Object]`，无法调试数据
+- ✅ 改为 `console.log("Submit:", obj)` 或使用 `JSON.stringify()` 正确打印
+- ❌ 起初使用 `https://localhost` 发起请求，导致浏览器 `ERR_SSL_PROTOCOL_ERROR`
+- ✅ 改为 `http://localhost` 并使用 Vite 跨域 proxy/或配置 .NET 允许本地请求解决
+
+🎓 小节状态：通关 ✅  
+📦 Chapter 7 正式结业 ✅
+
+## ⏳ Chapter 8：useEffect 与生命周期
+
+### ✅ 小节 8.1：副作用与 useEffect 的引入
+
+本节理解了 React 中副作用的含义、常见类型及为何需要 `useEffect` 来管理副作用行为。
+
+#### ✅ 什么是副作用（Side Effect）
+
+- 副作用指非渲染行为的操作，例如：
+  - 发起网络请求
+  - 修改浏览器标题（`document.title`）
+  - 设置定时器 / 事件监听
+  - 操作 DOM / 控制台输出
+- React 函数组件会在每次重新渲染时**重新执行整个函数体**
+  - 若副作用写在组件体内，将在每次渲染时重复执行 → 易导致死循环或性能问题
+
+#### ✅ useEffect 的作用
+
+- 将副作用逻辑“交给 React 安排”，确保在**渲染完成后执行**
+- 支持通过依赖数组（dependency array）精确控制执行时机：
+  - `useEffect(() => {...}, [])`：仅首次加载后执行一次
+  - `useEffect(() => {...}, [inputValue])`：仅在 inputValue 发生变化时执行
+  - 不传第二个参数时：每次渲染都会执行
+
+🎓 小节状态：通关 ✅
+
+### ✅ 小节 8.2：useEffect + 异步数据加载 + 状态控制
+
+本节掌握了如何在组件挂载后自动执行异步请求，以及通过 `useState` 管理 loading / error / data 三种状态，实现完整的副作用逻辑渲染流程。
+
+#### ✅ 技术流程
+
+- 使用 `useEffect(() => { ... }, [])` 代表组件首次加载后的副作用操作
+- 副作用中封装 `async` 函数进行 Axios 请求
+- 定义 3 个状态变量：
+  - `loading`：是否正在加载
+  - `error`：请求是否出错
+  - `responseData`：最终返回的数据（用于 `.map()`）
+
+#### ✅ 典型副作用判断：
+
+- 页面加载后发起请求 → ✅ 属于副作用
+- 用户输入触发本地状态更新 → ❌ 非副作用（是 UI 响应）
+- 用户输入触发动态搜索请求 → ✅ 是副作用（需 `useEffect` 监控 input）
+
+🎓 小节状态：通关 ✅
+
+### ✅ 小节 8.3：副作用清理机制（Cleanup）
+
+本节深入理解了副作用清理函数的执行机制与实际作用，明确了何时应清理、为何清理。
+
+#### ✅ 清理的目的
+
+- 避免组件卸载后仍执行异步逻辑（如 `setState`、console、数据覆盖）
+- 防止重复注册定时器、事件监听器导致性能浪费与逻辑冲突
+- 避免 React 报错：“Can't perform a state update on an unmounted component”
+
+#### ✅ 执行时机
+
+- 使用 `useEffect(() => { ... return () => {...} }, [])`
+- React 在组件**卸载前**自动执行 `return` 函数，不等待异步副作用结束
+- 可以通过布尔变量 `ignore = true` 或 `AbortController` 来中断未完成的异步流程
+
+#### ✅ 场景实例：
+
+- 页面加载发出 axios 请求 → 组件切页卸载 → 返回值不再触发 `setState`
+- 注册 resize 监听 → 卸载时 removeListener
+- 轮询定时器 → 卸载时 `clearInterval`
+
+🎓 小节状态：通关 ✅
+
+Chapter 8 正式结业
+
+下一步：开始chapter 9
+
+## Chapter 9 组件组织与状态提升
+
+### ✅ 小节 9.1：组件拆分与结构化
+
+- 将原本写在 App 中的表单和列表提取为 `<SearchInput>` 和 `<MemberList>` 两个函数组件
+- 子组件专注于结构和展示，状态仍由父组件集中调度
+- 完整掌握 props 基础传值结构，具备构建 UI 模块的能力
+
+🎓 小节状态：通关 ✅
+
+---
+
+### ✅ 小节 9.2：props 单向数据流与“子传父”
+
+- 明确了 props 的单向传递特性（父 → 子）
+- 理解 props 是只读数据，不可在子组件直接修改
+- 掌握了通过 props 向子组件传递 setState 函数 → 子组件回调通知父组件，实现“子传父”
+- 成功完成：`SearchInput` 同时更新 inputValue 与 keywordLength 状态，主组件自动响应更新
+
+🎓 小节状态：通关 ✅
+
+🎓 状态：第九章节正式通关 ✅，准备进入 Chapter 10：React Router 页面跳转与嵌套路由
